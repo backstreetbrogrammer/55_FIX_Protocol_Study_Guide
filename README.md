@@ -9,7 +9,8 @@
     - [Message Encoding](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#message-encoding)
     - [Sample FIX log](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#sample-fix-log)
 3. [FIX Session Layer](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#3-fix-session-layer)
-4. [FIX Application Layer]()
+    - [Message Recovery](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#message-recovery)
+4. [FIX Application Layer](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#4-fix-application-layer)
 
 ---
 
