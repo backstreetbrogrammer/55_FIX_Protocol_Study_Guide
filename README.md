@@ -158,7 +158,7 @@ Since the checksum is composed of three characters, this results in `10=062`.
 
 Sample FIX log containing various FIX messages:
 
-[fix_log1.txt](https://github.com/backstreetbrogrammer/13_TopCodingInterviewSolutionsInJava/blob/main/src/main/resources/fix_log1.txt)
+[fix_log1.txt](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide/blob/main/fix_log1.txt)
 
 One way to remember or refer all these FIX tags is to use these two sites:
 
