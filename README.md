@@ -4,9 +4,11 @@
 
 ## Table of contents
 
-1. [What is FIX protocol?]()
-2. [Technical Specifications]()
-3. [FIX Session Layer]()
+1. [What is FIX protocol?](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#1-what-is-fix-protocol)
+2. [Technical Specifications](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#2-technical-specifications)
+    - [Message Encoding](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#message-encoding)
+    - [Sample FIX log](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#sample-fix-log)
+3. [FIX Session Layer](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#3-fix-session-layer)
 4. [FIX Application Layer]()
 
 ---
@@ -164,4 +166,157 @@ One way to remember or refer all these FIX tags is to use these two sites:
 
 - [B2BITS](https://btobits.com/fixopaedia/index.html) - this is my personal favorite
 - [FIXimate](https://fiximate.fixtrading.org/)
+
+---
+
+## 3. FIX Session Layer
+
+![FixSession00](FixSession00.PNG)
+
+![FixSession01](FixSession01.PNG)
+
+![FixSession02](FixSession02.PNG)
+
+FIX is a **point-to-point**, **sequenced**, **session-oriented** protocol.
+
+This means that a FIX session must be established before any sequenced messages may be exchanged.
+
+This is analogous to two people starting the conversation on a telephone or mobile.
+
+![FIXConnection](FIXConnection.PNG)
+
+FIX is meant to be agnostic to the underlying transport, although, in practice, it is almost always implemented over a
+long-running **TCP** connection, where the lifecycle of the FIX session coincides with the lifecycle of the TCP
+connection.
+
+![FixSession04](FixSession04.PNG)
+
+Although it seems that the use of FIX sequence numbers over TCP is seemingly redundant, given that TCP itself is a
+sequenced, session-oriented protocol, since FIX’s sequence numbers are meant to survive **TCP disconnects**.
+
+![FixSession05](FixSession05.PNG)
+
+Each FIX session starts with a **Logon** message (`35=A`) and usually ends with a **Logout** message (`35=5`).
+
+There are **two** parties to each FIX session => one is designated as the **initiator**, and the other as the
+**acceptor**.
+
+![FixSession03](FixSession03.PNG)
+
+**_Logon (35=A)_**
+
+![FixSession06](FixSession06.PNG)
+
+![FixSession07](FixSession07.PNG)
+
+Once the TCP connection is established, the **initiator** sends a **Logon** message, and the **acceptor** responds back
+with its own **Logon** message.
+
+If both of these messages are accepted, the **FIX session is established**.
+
+**_Heartbeat (35=0)_**
+
+Once a FIX session is established and message recovery has been completed as necessary, the parties send periodic
+**Heartbeat** (`35=0`) messages to indicate to each other that they're still connected.
+
+![FixSession15](FixSession15.PNG)
+
+![FixSession16](FixSession16.PNG)
+
+**_Test Request (35=1)_**
+
+If one of the parties hasn't received a **Heartbeat** for a certain amount of time, it can issue a **Test Request**
+(`35=1`) to see if the counterparty is still connected and will respond to this probe.
+
+![FixSession17](FixSession17.PNG)
+
+![FixSession18](FixSession18.PNG)
+
+**_Logout (35=5)_**
+
+![FixSession26](FixSession26.PNG)
+
+If the counterparty does not respond in a timely manner, the session will likely be terminated (either by using a
+**Logout** message or just disconnecting at the TCP level).
+
+### Message Recovery
+
+FIX also provides mechanisms for **recovering** lost messages through the use of sequence numbers.
+
+Each party keeps track of its own **outgoing** sequence number, but also an expected **incoming** sequence number from
+the counterparty.
+
+![FixSession08](FixSession08.PNG)
+
+![FixSession11](FixSession11.PNG)
+
+![FixSession12](FixSession12.PNG)
+
+![FixSession13](FixSession13.PNG)
+
+![FixSession14](FixSession14.PNG)
+
+**_Resend Request (35=2)_**
+
+![FixSession09](FixSession09.PNG)
+
+![FixSession10](FixSession10.PNG)
+
+If a party sends a **Logon** with an unexpectedly high sequence number, the counterparty will issue a
+**Resend Request** (`35=2`) message with the sequence numbers it is missing.
+
+**_Sequence Reset (35=4)_**
+
+![FixSession22](FixSession22.PNG)
+
+![FixSession23](FixSession23.PNG)
+
+![FixSession24](FixSession24.PNG)
+
+![FixSession25](FixSession25.PNG)
+
+In response to this, the first party should respond back with the missing messages, or else, it can send a
+**Sequence Reset** (`35=4`) indicating that there are no "interesting" messages to resend (this could happen if all the
+missed messages are session-level messages from a previous session that are irrelevant in this session).
+
+**_Possible Resend_**
+
+![FixSession27](FixSession27.PNG)
+
+![FixSession28](FixSession28.PNG)
+
+**_Rejects_**
+
+Lastly, if a party encounters a malformed or an otherwise unacceptable message from the counterparty, it can use a
+**Session-level Reject** (`35=3`) message to indicate the same.
+
+![FixSession19](FixSession19.PNG)
+
+![FixSession20](FixSession20.PNG)
+
+![FixSession21](FixSession21.PNG)
+
+**_24 x 7 Trading_**
+
+![FixSession29](FixSession29.PNG)
+
+![FixSession30](FixSession30.PNG)
+
+**_A Typical FIX Session_**
+
+![FixSession31](FixSession31.PNG)
+
+**_Reference_**
+
+[FIX 4.2 Session](https://btobits.com/fixopaedia/fixdic42/index.html)
+
+![FIXSessionSummary](FIXSessionSummary.PNG)
+
+---
+
+## 4. FIX Application Layer
+
+Once a FIX session is established and the sequence of negotiations has been completed, application-layer messages may be
+sent.
+
 
