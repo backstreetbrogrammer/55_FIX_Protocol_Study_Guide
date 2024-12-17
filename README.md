@@ -320,4 +320,57 @@ Lastly, if a party encounters a malformed or an otherwise unacceptable message f
 Once a FIX session is established and the sequence of negotiations has been completed, application-layer messages may be
 sent.
 
+Let’s take a look at a typical lifecycle of an **order** (in `FIX 4.2`):
 
+- An order is typically placed using
+  a [New Order Single](https://btobits.com/fixopaedia/fixdic42/message_New_Order_Single_D.html) message (`35=D`)
+- The order is **acknowledged** or **rejected** using an
+  [ExecutionReport](https://btobits.com/fixopaedia/fixdic42/message_Execution_Report_8.html) message (`35=8`) with
+  `OrdStatus=New` (`39=0`) or `OrdStatus=Rejected` (`39=8`)
+  => [OrdStatus](https://btobits.com/fixopaedia/fixdic42/tag_39_OrdStatus.html)
+- Assuming the order is accepted, it may receive a **partial fill**, which is again represented using an
+  `ExecutionReport` with `OrdStatus=Partially filled` (`39=1`). If the order is **fully filled**, the message will
+  contain `OrdStatus=Filled` (`39=2`).
+- A request to **amend** the order parameters is sent as an
+  [Order Cancel/Replace Request](https://btobits.com/fixopaedia/fixdic42/message_Order_Cancel_Replace_Request_G.html)
+  message (`35=G`).
+- An amendment request is **accepted**, again using an `ExecutionReport` message, by specifying `ExecType=Replaced`
+  (`150=5`).
+  => [ExecType](https://btobits.com/fixopaedia/fixdic42/tag_150_ExecType.html)
+- A request to **cancel** the order is sent as an
+  [Order Cancel Request](https://btobits.com/fixopaedia/fixdic42/message_Order_Cancel_Request_F.html) message (`35=F`).
+- Acceptance of the order cancellation is sent using, again, an `ExecutionReport` message with `OrdStatus=Canceled`
+  (`39=4`).
+- An amendment or a cancellation request can be **rejected** using an
+  [Order Cancel Reject](https://btobits.com/fixopaedia/fixdic42/message_Order_Cancel_Reject_9.html) message (`35=9`).
+
+![FIXOrderFlow](FIXOrderFlow.PNG)
+
+### Order State Change Matrices
+
+Each `ExecutionReport` (`39=8`) contains two fields which are used to communicate both the current state of the order as
+understood by the broker (`OrdStatus`) and the purpose of the message (`ExecType`).
+
+In an execution report the `OrdStatus` is used to convey the current state of the order.
+
+If an order simultaneously exists in more than one order state, the value with the highest precedence is the value that
+is reported in the `OrdStatus` field.
+
+The order statuses are as follows (in highest to lowest precedence):
+
+![OrderStatus_p1](OrderStatus_p1.PNG)
+
+![OrderStatus_p2](OrderStatus_p2.PNG)
+
+The Table below shows which state transitions have been illustrated by the matrices.
+
+![OrderMatrix](OrderMatrix.PNG)
+
+How to read the Order State Change Matrices:
+
+- The row represents the current value of OrdStatus and the column represents the next value as reported back to the
+  buy-side via an execution report or order cancel reject message
+- Next to each OrdStatus value is its precedence – this is used when the order exists in a number of states
+  simultaneously to determine the value that should be reported back
+- Note that absence of a scenario should not necessarily be interpreted as meaning that the state transition is not
+  allowed
