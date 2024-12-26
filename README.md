@@ -11,6 +11,8 @@
 3. [FIX Session Layer](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#3-fix-session-layer)
     - [Message Recovery](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#message-recovery)
 4. [FIX Application Layer](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide?tab=readme-ov-file#4-fix-application-layer)
+    - [Order State Change Matrices](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide/tree/main?tab=readme-ov-file#order-state-change-matrices)
+    - [FIX 4.4 Errata](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide/tree/main?tab=readme-ov-file#fix-44-errata)
 
 ---
 
@@ -377,6 +379,8 @@ How to read the Order State Change Matrices:
 
 ### FIX 4.4 Errata
 
-Attached is the complete [PDF]() which could be used as a reference guide for understanding different types of FIX 
-messages and their order / sequences.
+Attached is the complete
+[PDF](https://github.com/backstreetbrogrammer/55_FIX_Protocol_Study_Guide/blob/main/fix-44_VOL-4_w_Errata_20030618.pdf)
+which could be used as a reference guide for understanding different types of FIX messages and their order / sequences.
+
 
