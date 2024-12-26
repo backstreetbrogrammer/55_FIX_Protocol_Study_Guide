@@ -374,3 +374,9 @@ How to read the Order State Change Matrices:
   simultaneously to determine the value that should be reported back
 - Note that absence of a scenario should not necessarily be interpreted as meaning that the state transition is not
   allowed
+
+### FIX 4.4 Errata
+
+Attached is the complete [PDF]() which could be used as a reference guide for understanding different types of FIX 
+messages and their order / sequences.
+
