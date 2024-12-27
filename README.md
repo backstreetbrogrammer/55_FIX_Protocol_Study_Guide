@@ -368,6 +368,8 @@ The Table below shows which state transitions have been illustrated by the matri
 
 ![OrderMatrix](OrderMatrix.PNG)
 
+[Appendix D](https://b2bits.com/fixopaedia/appendices/fix_42_appendix_d.html)
+
 How to read the Order State Change Matrices:
 
 - The row represents the current value of OrdStatus and the column represents the next value as reported back to the
